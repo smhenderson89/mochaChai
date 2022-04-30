@@ -15,8 +15,8 @@ suite('Functional Tests', function () {
         .request(server)
         .get('/hello')
         .end(function (err, res) {
-          assert.fail(res.status, 200);
-          assert.fail(res.text, 'hello Guest');
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'hello Guest');
           done();
         });
     });
@@ -24,10 +24,10 @@ suite('Functional Tests', function () {
     test('Test GET /hello with your name', function (done) {
       chai
         .request(server)
-        .get('/hello?name=xy_z')
+        .get('/hello?name=Scott_Henderson')
         .end(function (err, res) {
-          assert.fail(res.status, 200);
-          assert.fail(res.text, 'hello xy_z');
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'hello Scott_Henderson');
           done();
         });
     });
@@ -36,10 +36,22 @@ suite('Functional Tests', function () {
       chai
         .request(server)
         .put('/travellers')
-
+        .send({
+          "surname" : "Colombo"
+        })
         .end(function (err, res) {
-          assert.fail();
-
+          assert.equal(res.status, 200, 'response should be 200');
+          assert.equal(res.type, 'application/json', 'Response is json')
+          assert.equal(
+            res.body.name,
+            'Cristoforo',
+            'res.body.name is Cristoforo'
+            );
+          assert.equal(
+            res.body.surname,
+            'Colombo',
+            'res.body.surname is Colombo'
+            );
           done();
         });
     });
